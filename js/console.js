@@ -7,6 +7,8 @@ function consoleInterface(element, onMessage, options){
 			includeTime: true, //Shows the time of the message
 			block: false, //Inline or block messages
 			includeTags: true, //Shows the author of the message
+			defaultTagStyle: null, //Add css for the author '.your-class-name'
+			defaultTextStyle: null, //Add css for the text '.your-class-name'
 		},
 
 		code: {
@@ -37,21 +39,21 @@ function consoleInterface(element, onMessage, options){
 
 }
 
-function message(content,options){
+function message(content,style){
 
 	this.defaultContent = {
 		tag: null, //The author of the message - not required
 		text: null //The text of the message
 	}
 
-	this.defaultOptions = {
+	this.defaultStyle = {
 		block: null, //Inline or block style
 		tagStyle: null, //Add css for the author '.your-class-name'
 		textStyle: null, //Add css for the text '.your-class-name'
 	}
 
 	this.content = completeAssign(this.defaultContent,content);
-	this.options = completeAssign(this.defaultOptions,options);
+	this.style = completeAssign(this.defaultOptions,style);
 	this.time = null; 
 
 }
@@ -99,6 +101,6 @@ function completeAssign(target, ...sources) {
 
 
 //?!!!!!!! 
-if(message.length > 20) {message.style.format = block}
+if(message.length > 20) {message.options.block = true}
 //add and remove rules
 var console = new Console();
