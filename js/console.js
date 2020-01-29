@@ -12,10 +12,7 @@ function consoleInterface(element, onMessage, options){
 		},
 
 		code: {
-			//False: no user code, 
-			//True: user must spesify the code with the deliminator phrase - ** //your code here **, 
-			//Auto: Will automatically detect javascript
-			usage: false,
+			usage: false, //False: no code evaluation, True: all text the user has entered is evaluated as js, tagged: code is run between between deliminator
 			deliminator:'**'//Deliminator phrase for code
 		},
 
@@ -25,77 +22,133 @@ function consoleInterface(element, onMessage, options){
 		},
 
 		listen:{
-			enabled: true,  //Prints everything the browser console outputs
+			enabled: false,  //Prints everything the browser console outputs
 			tag: 'Console' //The author tag for the browser console - will look in authors for styling
-		}
-		
+		},
 
 	}
+
+	this.options = fullMerge(this.defaultOptions,options);
+	this.onMessage = onMessage; 
+	this.history = [];
 	
 	this.element = element;
-	this.onMessage = onMessage;
-	this.history = [];
-	this.options = completeAssign(this.defaultOptions,options);
+	this.element.history = element.children[0].children[0].children[0];
+	this.element.form = element.children[0].children[1].children[0];
+	this.element.inputBox = this.element.form.children[0];
+	this.element.inputBtn = this.element.form.children[1];
+	
+	this.element.form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		this.getInput();
+	});
+
+	this.element.inputBtn.addEventListener('click',() => {this.getInput()});
 
 }
 
-function message(content,style){
+function message(e){
 
-	this.defaultContent = {
+	this.default = {
 		tag: null, //The author of the message - not required
-		text: null //The text of the message
+		text: null, //The text of the message
+		style: {
+			block: null, //Inline or block style
+			tagStyle: null, //Add css for the author '.your-class-name'
+			textStyle: null //Add css for the text '.your-class-name'
+		}
 	}
 
-	this.defaultStyle = {
-		block: null, //Inline or block style
-		tagStyle: null, //Add css for the author '.your-class-name'
-		textStyle: null, //Add css for the text '.your-class-name'
-	}
-
-	this.content = completeAssign(this.defaultContent,content);
-	this.style = completeAssign(this.defaultOptions,style);
-	this.time = null; 
+	e = fullMerge(this.default,e);
+	this.tag = e.tag;
+	this.text = e.text;
+	this.style = e.style;	
+	this.time = new Date();
 
 }
 
-consoleInterface.prototype.clear = function(){
 
-	//change the htmllL!!!!!!
+
+consoleInterface.prototype.clearHistory = function(){//Clears the history of the console
+
 	this.history = [];
+	this.element.history.value = null;
+
+}
+
+consoleInterface.prototype.copyInput = function(){//Coppy's the current input
+
+	var m = new message();
+	m.tag = this.options.parrot.tag;
+	m.text = this.element.inputBox.value;
+
+	return m;
+}
+
+consoleInterface.prototype.getInput = function(){//Sends and clears the current input
+
+	var m = this.copyInput();
+	if(m.text != ''){
+		this.element.inputBox.value = null;
+		this.history.push(m);
+		this.onMessage(m);
+		if(this.options.parrot.enabled == true) this.out(m);
+	}
+
 }
 
 consoleInterface.prototype.out = function(message){
 
-	var output = '';
+	switch (this.options.code.usage){
+		case true:
+			message.text = eval(message.text);
+		break;
+		case 'tagged':
+			if(message.text.includes(this.options.code.deliminator)){
+
+				message.text = message.text.split(this.options.code.deliminator);
+
+				for(var i=0;i<message.text.length;i++){
+					if(i % 2) message.text[i] = eval(message.text[i]);
+				}
+				message.text = message.text.join('');
+				
+			}
+		break;
+	}
 
 	
+	// evalutate code
 
-	//search for code
+	// form html
 
-	//create html
-
-	//post
-
-
-
+	// display
 }
 
-//Full merge
-function completeAssign(target, ...sources) {
+
+
+function fullMerge(target, ...sources){ //merges two or more objects
+
+	if(typeof target == 'undefined' || target == null) target = {};
+	
 	sources.forEach(source => {
-	  let descriptors = Object.keys(source).reduce((descriptors, key) => {
-		descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
-		return descriptors;
-	  }, {});
-	  
-	  Object.getOwnPropertySymbols(source).forEach(sym => {
-		let descriptor = Object.getOwnPropertyDescriptor(source, sym);
-		if (descriptor.enumerable) {
-		  descriptors[sym] = descriptor;
+
+		if(typeof source == 'undefined') source = {};
+		for(var key in target){		
+			if(source[key] != undefined){
+				if(typeof target[key] == 'object' && target[key] != null){
+					target[key] = fullMerge(target[key],source[key]);
+				} else {
+					if(typeof source[key] != 'null') target[key] = source[key];
+				}
+			}
 		}
-	  });
-	  Object.defineProperties(target, descriptors);
+
+		for(var key in source) {
+			if(target[key] == undefined) target[key] = source[key];
+		}
 	});
+
 	return target;
 }
 
@@ -103,4 +156,10 @@ function completeAssign(target, ...sources) {
 //?!!!!!!! 
 if(message.length > 20) {message.options.block = true}
 //add and remove rules
-var console = new Console();
+var c = new consoleInterface(document.getElementById('1'),function(x){
+	//console.log('New message: ' + x.text);
+},{
+	code: {
+		usage:'tagged'
+	}
+});
