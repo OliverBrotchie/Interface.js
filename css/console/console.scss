@@ -1,8 +1,17 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import 'library/materialize.scss';
-@import 'library/fonts.css';
-@import 'options';
+@import 'components/fonts.css';
+@import 'components/normalize.css';
+@import 'components/grid.scss';
+@import 'variables/variables.scss';
 
+$history-window-height:500px !default;
+$text-color:rgba(0, 0, 0, 0.82) !default;
+$time-color:rgba(0, 0, 0, 0.82) !default;
+$accent-color: #26a69a !default;
+$separator-color:#e0e0e0 !default;
+$input-separator-color:rgba(160, 160, 160, 0.2) !default;
+$scollbar-color:#bdbdbd !default;
+$background-color:#fff !default;
 
 @mixin fade-in($time){
     animation: fadeIn ease $time;
@@ -12,116 +21,6 @@
     -ms-animation: fadeIn ease $time;
     opacity: 1;
 }
-
-
-.console { 
-    
-    @extend .card;
-    @extend .horizontal;
-
-    color: $text-color;
-    background-color: $background-color;
-    
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background-color: $scollbar-color;
-        border-radius:5px
-    }
-    
-    &-input{
-        @extend .card-action;
-        padding: 10px 24px 0 24px !important;
-
-        input{
-            font-family: inherit;
-            font-weight: inherit;
-            font-style: inherit;
-            font-size: inherit;        
-        }
-
-        input:focus {
-            border-bottom: 1px solid #26a69a !important;
-            box-shadow: 0 1px 0 0 #26a69a !important;
-        }
-    }
-
-    &-history{
-        @extend .card-content;
-        overflow-y:auto;
-        height:500px;
-        margin-top:10px;
-    }
-
-    &-content{
-        @extend .card-stacked;
-        background-color: $background-color;
-    }
-
-    .submit-btn {
-
-        display:block;
-        padding-top:12px;
-        padding-left:0px;
-
-        i {
-            transition: opacity .3s ease;
-            color: #26a69a;
-            cursor:pointer;
-            font-size:3em;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        i:hover {
-            opacity: 0.52;
-        }
-    }
-
-    .message{
-        @include fade-in(0.5s);
-        padding:20px 10px;
-        
-        &-author{
-            display:inline-block;
-            padding-right:8px;
-        }
-        
-        &-text{
-            display:inline-block;
-        }
-
-        &-block{
-            padding-top: 10px;
-            display:block;
-        }
-
-        &-time{
-            @extend .right;
-            color:$time-color;
-        }
-        
-    }
-
-    .has-separator {
-        border-bottom:1px;
-        border-color: $separator-color;
-        border-bottom-style:solid;
-    }
-
-    .separator {
-        @include fade-in(0.5s);
-        background-color: $separator-color;
-        width:100%;
-        height:1px;
-    }
-
-
- }
 
 @keyframes fadeIn {
     0% {
@@ -149,3 +48,145 @@
     opacity:1;
     }
 }
+
+/*
+ --Change any of this to fit your needs
+*/
+
+.console { 
+    @include fade-in(0.8s);
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    margin: 0.5rem 0 1rem 0;
+    border-radius: 2px;
+    background-color: $background-color;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow .25s;
+    color: $text-color;
+    line-height: 1.5;  
+    
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: $scollbar-color;
+        border-radius:5px
+    }
+    
+    &-input{
+        border-radius: 0 0 2px 2px;
+        border-top: 1px solid $input-separator-color;
+        position: relative;
+        padding: 10px 24px 0 24px;
+
+        input{
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: inherit;
+            font-size: inherit;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #9e9e9e;
+            border-radius: 0;
+            outline: none;
+            height: 3rem;
+            width: 100%;
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            padding: 0;
+            box-shadow: none;
+            box-sizing: content-box;
+            transition: box-shadow .3s, border .3s;   
+            line-height: 1.15;    
+        }
+
+        input:focus {
+            border-bottom: 1px solid $accent-color;
+            box-shadow: 0 1px 0 0 $accent-color;
+        }
+    }
+
+    &-history{
+        overflow-y:auto;
+        height:$history-window-height;
+        padding: 34px 24px 24px 24px;
+        border-radius: 0 0 2px 2px;
+    }
+
+    &-content{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        position: relative;
+    }
+
+    .submit-btn {
+
+        display:block;
+        padding-top:12px;
+        padding-left:0px;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+
+        i {
+            line-height: 1;
+            transition: opacity .3s ease;
+            color: $accent-color;
+            cursor:pointer;
+            font-size:3em;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        i:hover {
+            opacity: 0.52;
+        }
+    }
+
+    .message{
+        @include fade-in(0.5s);
+        padding:20px 10px;
+        
+        &-author {
+            display:inline-block;
+            padding-right:8px;
+        }
+        
+        &-text {
+            display:inline-block;
+        }
+
+        &-block {
+            display:block;
+            &-tags{
+                padding-top: 10px;
+            }
+        }
+
+        &-time {
+            float:right;
+            color:$time-color;
+        }
+        
+    }
+
+    .has-separator {
+        border-bottom:1px;
+        border-color: $separator-color;
+        border-bottom-style:solid;
+    }
+
+    .separator {
+        @include fade-in(0.5s);
+        background-color: $separator-color;
+        width:100%;
+        height:1px;
+    }
+
+
+ }
+ 

@@ -3,17 +3,22 @@ function consoleInterface(element, onMessage, options){
 	this.defaultOptions = { //The defualt options for a console
 		
 		messageOptions: {
-			separators: 'full',	// False: no separators, stripped: between messages, full: separators beteen everything [defualt]
-			includeTime: true, //Shows the time of the message
-			block: false, //Inline or block messages
-			includeTags: true, //Shows the author of the message
-			defaultTagStyle: null, //Add css for the author '.your-class-name'
-			defaultTextStyle: null, //Add css for the text '.your-class-name'
+			text:{
+				block: false, //Inline or block messages
+				defaultTextStyle: null //Add css for the text -  '.your-class-name'
+			},
+			tags:{
+				enabled: true, //Shows the author of the message
+				defaultTagStyle: null, //Add css for the author -  '.your-class-name'
+				tagStyles:{} //Add css for the author -  authorName:'.your-class-name'
+			},
+			separators: true,	//Includes seperators between messages
+			includeTime: true //Shows the time of the message		
 		},
 
 		code: {
 			usage: false, //False: no code evaluation, True: all text the user has entered is evaluated as js, tagged: code is run between between deliminator
-			deliminator:'**'//Deliminator phrase for code
+			deliminator:'^^'//Deliminator phrase for code
 		},
 
 		parrot: { 
@@ -52,7 +57,7 @@ function message(e){
 	this.default = {
 		tag: null, //The author of the message - not required
 		text: null, //The text of the message
-		style: {
+		style: { //Overides any default styles
 			block: null, //Inline or block style
 			tagStyle: null, //Add css for the author '.your-class-name'
 			textStyle: null //Add css for the text '.your-class-name'
@@ -76,13 +81,42 @@ consoleInterface.prototype.clearHistory = function(){//Clears the history of the
 
 }
 
+
+consoleInterface.prototype.evalCode = function(m){
+
+	switch (this.options.code.usage){
+		case true:
+			m.text = eval(m.text);
+		break;
+		case 'tagged':
+			if(m.text.includes(this.options.code.deliminator)){
+
+				if(this.options.code.deliminator == reverseChars(this.options.code.deliminator)){
+					m.text = m.text.split(this.options.code.deliminator);
+				} else {
+					m.text = splitMulti(m.text,[this.options.code.deliminator, reverseChars(this.options.code.deliminator)]);
+				}
+
+				for(var i=0;i<m.text.length;i++){
+					if(i % 2) m.text[i] = eval(m.text[i]);
+				}
+
+				m.text = m.text.join('');
+
+			}
+		break;
+	}
+
+	return m;
+}
+
 consoleInterface.prototype.copyInput = function(){//Coppy's the current input
 
 	var m = new message();
 	m.tag = this.options.parrot.tag;
 	m.text = this.element.inputBox.value;
 
-	return m;
+	return this.evalCode(m);
 }
 
 consoleInterface.prototype.getInput = function(){//Sends and clears the current input
@@ -94,38 +128,73 @@ consoleInterface.prototype.getInput = function(){//Sends and clears the current 
 		this.onMessage(m);
 		if(this.options.parrot.enabled == true) this.out(m);
 	}
-
+	
 }
 
-consoleInterface.prototype.out = function(message){
 
-	switch (this.options.code.usage){
-		case true:
-			message.text = eval(message.text);
-		break;
-		case 'tagged':
-			if(message.text.includes(this.options.code.deliminator)){
+consoleInterface.prototype.out = function(m){
 
-				message.text = message.text.split(this.options.code.deliminator);
+	var html = document.createElement("div");
 
-				for(var i=0;i<message.text.length;i++){
-					if(i % 2) message.text[i] = eval(message.text[i]);
-				}
-				message.text = message.text.join('');
-				
+	switch(true){
+		case this.options.messageOptions.separators:
+
+			if(!this.element.history.hasChildNodes()){
+				this.element.history.appendChild(document.createElement("div"));
+				this.element.history.lastChilds.classList.add("separator");
 			}
+
+			html.classList.add("has-separator");
 		break;
+		case this.options.messageOptions.tags.enabled:
+
+			html.appendChild(document.createElement("div"));
+			
+			if(m.style.tagStyle)
+			 
+			
+
+
+		break;
+		case true:
+
+			html += '<div class="message-text">'+ m.text + '</div>';
+
+		break;
+		case this.options.includeTime == true:
+
+		break;
+		default:
+			html += '</div>'
 	}
-
-	
-	// evalutate code
-
 	// form html
 
 	// display
 }
 
+function reverseChars(str){
+	var chars = ['[','{','(','<'], reverseChars = [']','}',')','>'];
+	str = str.split('');
 
+	str.forEach(e => {
+		for(var i = 0;i<chars.length;i++){
+			e.replace(chars[i],reverseChars[i]);
+		}
+	});
+	
+	return str.reverse().join('');
+}
+
+function splitMulti(str, separators){
+	var tempChar = 't3mp'; //prevent short text separator in split down
+	
+	//split by regex e.g. \b(or|and)\b
+	var re = new RegExp('\\b(' + separators.join('|') + ')\\b' , "g");
+	str = str.replace(re, tempChar).split(tempChar);
+	
+	// trim & remove empty
+	return str.map(el => el.trim()).filter(el => el.length > 0);
+}
 
 function fullMerge(target, ...sources){ //merges two or more objects
 
@@ -152,14 +221,10 @@ function fullMerge(target, ...sources){ //merges two or more objects
 	return target;
 }
 
-
-//?!!!!!!! 
-if(message.length > 20) {message.options.block = true}
-//add and remove rules
-var c = new consoleInterface(document.getElementById('1'),function(x){
-	//console.log('New message: ' + x.text);
-},{
+var c = new consoleInterface(document.getElementById('1'),function(x){},{
 	code: {
 		usage:'tagged'
 	}
 });
+
+//make the code mixins!!!
