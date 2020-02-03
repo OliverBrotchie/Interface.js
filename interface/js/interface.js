@@ -4,7 +4,6 @@ function Interface(element, onMessage, options){
 		
 		messageOptions: {
 			text:{
-				block: false, //Inline or block messages
 				defaultTextStyle: null //Add css for the text -  '.your-class-name'
 			},
 			tags:{
