@@ -170,7 +170,7 @@ $background-color:#fff !default;
             user-select: none;
         }
 
-        i:hover {
+        i:active{
             opacity: 0.52;
         }
     }
@@ -198,6 +198,14 @@ $background-color:#fff !default;
                 padding-right:11px;
                 padding-left:11px;
             }
+
+            a {
+                -ms-hyphens: manual;
+                -moz-hyphens: manual;
+                -webkit-hyphens: manual;
+                hyphens: manual;
+            }
+
         }
 
         &-time {

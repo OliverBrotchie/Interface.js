@@ -663,7 +663,7 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none; }
-    .interface .submit-btn i:hover {
+    .interface .submit-btn i:active {
       opacity: 0.52; }
   .interface .message {
     animation: fadeIn ease 0.5s;
@@ -699,6 +699,11 @@
         .interface .message-text {
           padding-right: 11px;
           padding-left: 11px; } }
+      .interface .message-text a {
+        -ms-hyphens: manual;
+        -moz-hyphens: manual;
+        -webkit-hyphens: manual;
+        hyphens: manual; }
     .interface .message-time {
       margin-left: auto;
       margin-top: auto;

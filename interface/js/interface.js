@@ -211,7 +211,12 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 	//add the message
 	html.appendChild(document.createElement("div"));
 	html.lastChild.classList.add("message-text");
-	html.lastChild.appendChild(document.createTextNode(m.text));
+
+	evalLinks(m.text).forEach(e =>{
+		html.lastChild.appendChild(e);
+	});
+
+	html.lastChild.normalize();
 
 	if(m.style.textStyle != null){
 		html = addClasses(html, m.style.textStyle);
@@ -234,6 +239,7 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 
 	//display
 	this.element.history.appendChild(html);
+	this.element.history.lastChild.scrollIntoView();
 }
 
 function reverseChars(str){ //Reverses given charecters (including open/close chars)
@@ -318,4 +324,33 @@ function addZero(i) {
 	  i = "0" + i;
 	}
 	return i;
+}
+
+function evalLinks(string){
+	
+	var temp, output = [];
+
+	string.split(' ').forEach(e=>{
+		if(e.includes("http")){
+			temp = document.createElement("a");
+			temp.href = e;
+			temp.appendChild(document.createTextNode(e)); 
+		} else {
+			temp = document.createTextNode(e)
+		}
+
+		output.push(temp);
+	});
+
+	var i = 1;
+
+	while (i < output.length) {
+		output.splice(i, 0, document.createTextNode(" "));
+		i += 2;
+	}
+
+	console.log(output);
+
+	return output;
+
 }
