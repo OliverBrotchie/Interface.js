@@ -17,7 +17,8 @@
 
 .row {
   margin-left: auto;
-  margin-right: auto; }
+  margin-right: auto;
+  margin-bottom: 0; }
   .row:after {
     content: "";
     display: table;
@@ -638,7 +639,7 @@
     flex: 1 1 auto;
     min-height: 120px;
     max-height: 100%;
-    padding: 34px 24px 24px 24px;
+    padding: 34px 24px 16px 24px;
     border-radius: 0 0 2px 2px; }
   .interface-content {
     display: flex;

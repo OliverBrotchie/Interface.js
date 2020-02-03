@@ -61,6 +61,7 @@ $element-bottom-margin: ($gutter-width*2)/3 !default;
 .row {
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 0;
 
   // Clear floating children
   &:after {
