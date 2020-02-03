@@ -1,2 +1,2 @@
-# Console.js
- A visual console for js aplications
+# Interface.js
+ A visual html interface for js aplications!
