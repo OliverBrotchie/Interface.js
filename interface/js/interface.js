@@ -59,7 +59,7 @@ function Interface(element, onMessage, options){
 
 }
 
-function message(e){
+function Message(e){
 
 	this.default = {
 		tag: null, //The author of the message - not required
@@ -85,11 +85,7 @@ Interface.prototype.evalCode = function(m){ //evaluates any code in a message
 
 	switch (this.options.code.usage){
 		case true:
-			try {
-				m.text = eval(m.text);
-			} catch(error){ 
-				m.text = error.message;
-			}
+			m.text = evaluate(m.text);
 		break;
 		case 'tagged':
 			if(m.text.includes(this.options.code.deliminator)){
@@ -102,11 +98,7 @@ Interface.prototype.evalCode = function(m){ //evaluates any code in a message
 
 				for(var i=0;i<m.text.length;i++){
 					if(i % 2){
-						try {
-							m.text[i] = eval(m.text[i]);
-						} catch(error){ 
-							m.text[i] = error.message;
-						}
+						m.text[i] = evaluate(m.text[i]);
 					}
 				}
 
@@ -127,7 +119,7 @@ Interface.prototype.evalCommands = function(m){
 					try{
 						this.options.consoleCommands.commands[key]();
 					} catch(error){
-						console.log("Console command failed, reason: " + error.message);
+						this.out(new Message({tag:"Console",text:"Console command failed, reason: " + error.message}));
 					}
 				}
 			})
@@ -138,7 +130,7 @@ Interface.prototype.evalCommands = function(m){
 
 Interface.prototype.copyInput = function(){ //Coppy's the current input
 
-	var m = new message();
+	var m = new Message();
 	m.tag = this.options.parrot.tag;
 	m.text = this.element.inputBox.value;
 
@@ -348,8 +340,102 @@ function evalLinks(string){
 		i += 2;
 	}
 
-	console.log(output);
+	return output;
+
+}
+
+function selectiveSplit(str,split){
+	
+	console.log(str);
+
+	var currentPart = "", isInQuotes= false,isInApostrophe = false, output = [];
+
+	for(var i = 0; i < str.length; i++){
+
+		var char = str.charAt(i);
+		
+		if (char === split && !isInQuotes && !isInApostrophe){
+			output.push(currentPart);
+			currentPart = "";
+		} else {
+			currentPart += char;
+		}
+
+		if (char === '"') {
+			isInQuotes = !isInQuotes;
+		} 
+		
+		if (char == "'") {
+			isInApostrophe = !isInApostrophe;
+		}
+	}
+
+	if (currentPart) output.push(currentPart);
 
 	return output;
+}
+
+const evaluate = (str) =>{ //eval that stores variables
+
+	//split at ;
+	//create list of var and referenced value
+	//save all vars and 
+	//if there is a var save it at window[var] = value
+
+	//split the name at = 
+	var operators = ['+', '-', '*', '/', '%'],coppy = str,output = [];	
+	
+	str = selectiveSplit(str,';').forEach(e =>{
+		
+		var pivot = null;
+		e = e.trim().split("");	
+
+		for(var i = 0;i < e.length;i++){
+			if(e[i] == "=" && e[i-1] != "=" && e[i+1] != "="){
+				if(operators.includes(e[i-1])){
+					pivot = i-1;
+				} else {
+					pivot = i;
+				}
+			}
+		}
+
+		e = e.join("");
+
+		if(pivot == null){
+
+			try {
+				output.push(eval(e));
+			} catch(error){ 
+				output.push(error.message);
+			}	
+					
+		} else {
+		
+			if(e.substring(0,3) == "var"){
+				type = e.substring(0,3);
+			} else if(e.substring(0,5) == "const"){
+				type = e.substring(0,5);
+			}
+			
+			try {
+				if(operators.includes(e[i-1])){
+					this[e.substring(type.length,pivot).trim()] = eval(e.substring(pivot+2,e.length));
+				} else {
+					this[e.substring(type.length,pivot).trim()] = eval(e.substring(pivot+1,e.length));
+				}
+				output.push("");
+			} catch(error){ 
+				output.push(error.message);
+			}	
+		}
+		
+	});
+
+	if(output.join(" ").trim() != ""){
+		return output.join("").trim();
+	}
+
+	return coppy;
 
 }

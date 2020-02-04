@@ -86,9 +86,9 @@ html, body {
   @media only screen and (min-width: 601px) {
     #example {
       width: 600px;
-      font-size: 14px;
       margin: 30px auto;
-      max-height: calc(100vh - 130px); } }
+      max-height: calc(100vh - 130px);
+      font-size: 14px; } }
   @media only screen and (min-width: 992px) {
     #example {
       width: 900px;

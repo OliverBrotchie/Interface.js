@@ -124,6 +124,7 @@ html,body {
 	height: 100vh;
 	margin: 0;
 	background-color:#fff;
+
 }
 
 .host{
@@ -142,10 +143,11 @@ html,body {
 
 	@media only screen and (min-width : 601px) {
 		width: 600px;
-		font-size: 14px;
 		margin:30px auto;
 		max-height:calc(100vh - 130px);
+		font-size: 14px;
 	}
+	
 	@media only screen and (min-width : 992px) {
 		width: 900px;
 		margin:30px auto;
