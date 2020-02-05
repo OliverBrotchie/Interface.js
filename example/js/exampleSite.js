@@ -6,11 +6,18 @@ var c = new Interface(document.getElementById('example').firstElementChild,m => 
 				You:"client",
 				Console:"host"
 			}
-
 		}
 	},
 	code: {
 		usage:'tagged'
+	},
+	consoleCommands:{
+		commands:{ 
+			secret: function(){
+				this.removeLast();
+				this.out(new Message({text:"°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸",tag:"Console"}));
+			}
+		}
 	}
 });
 

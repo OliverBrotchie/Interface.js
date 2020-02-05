@@ -19,7 +19,7 @@ function Interface(element, onMessage, options){
 			enabled: true, //Allows the use of console commands
 			deliminator: "//", //Deliminator phrase for console commands
 			commands: { //List of console commands
-				clearHistory: this.clearHistory.bind(this)
+				clearHistory: this.clearHistory
 			} 
 		},
 
@@ -113,19 +113,16 @@ Interface.prototype.evalCode = function(m){ //evaluates any code in a message
 Interface.prototype.evalCommands = function(m){
 
 	m.text.split(" ").forEach(e=>{
-		if(e.includes(this.options.consoleCommands.deliminator)){
-			Object.keys(this.options.consoleCommands.commands).forEach(key =>{
-				if(e.substr(2, e.length) == key){
-					try{
-						this.options.consoleCommands.commands[key]();
-					} catch(error){
-						this.out(new Message({tag:"Console",text:"Console command failed, reason: " + error.message}));
-					}
+		Object.keys(this.options.consoleCommands.commands).forEach(key =>{
+			if(e.substr(2, e.length) == key && e.substr(0, 2) == "//"){
+				try{
+					this.options.consoleCommands.commands[key].bind(this)();
+				} catch(error){
+					this.out(new Message({tag:"Console",text:"Console command failed, reason: " + error.message}));
 				}
-			})
-		}
+			}
+		});
 	});
-	
 }
 
 Interface.prototype.copyInput = function(){ //Coppy's the current input
@@ -142,8 +139,6 @@ Interface.prototype.getInput = function(){ //Sends and clears the current input
 	var m = this.copyInput();
 	if(m.text != ''){
 		this.element.inputBox.value = null;
-		this.history.push(m);
-
 		if(this.options.parrot.enabled == true) this.out(m);
 		if(this.options.consoleCommands.enabled == true) this.evalCommands(m);
 		this.onMessage(m);
@@ -161,6 +156,35 @@ Interface.prototype.clearHistory = function(){ //Clears the history
 
 }
 
+Interface.prototype.removeLast = function(number){ //Clears the history from the bottom
+	
+	if(typeof number != 'undefined'){
+		while (number<0) {
+			this.history.pop();
+			this.element.history.removeChild(this.element.history.lastChild);
+			number--;
+		}
+	} else {
+		this.history.pop();
+		this.element.history.removeChild(this.element.history.lastChild);
+	}
+	
+}
+
+Interface.prototype.removeFirst = function(){ //Clears the history from the top
+
+	if(typeof number != 'undefined'){
+		while (number<0) {
+			this.history.shift();
+			this.element.history.removeChild(this.element.history.firstChild);
+			number--;
+		}
+	} else {
+		this.history.shift();
+		this.element.history.removeChild(this.element.history.firstChild);
+	}
+
+}
 
 Interface.prototype.out = function(m){ //Outputs a message to the interface
 
@@ -171,13 +195,13 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 	if(this.options.messageOptions.separators){
 
 		if(this.element.history.childElementCount == 0){
-			this.element.history.appendChild(document.createElement("div"));
-			this.element.history.lastChild.classList.add("separator");
+			html.classList.add("separator-top");
 		}
 
-		html.classList.add("has-separator");
+		html.classList.add("separator-bottom");
 
 	}
+
 	//add tags
 	if(this.options.messageOptions.tags.enabled){
 
@@ -227,6 +251,8 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 		));
 
 	}
+
+	this.history.push(m);
 
 	//display
 	this.element.history.appendChild(html);
@@ -310,14 +336,14 @@ function addClasses(html,classList){
 	return html;
 }
 
-function addZero(i) {
+function addZero(i) { //adds zero for 24 hour times
 	if (i < 10) {
 	  i = "0" + i;
 	}
 	return i;
 }
 
-function evalLinks(string){
+function evalLinks(string){ //transforms hyperlinks into real links
 	
 	var temp, output = [];
 
@@ -344,9 +370,7 @@ function evalLinks(string){
 
 }
 
-function selectiveSplit(str,split){
-	
-	console.log(str);
+function selectiveSplit(str,split){ //split that exludes charecters in quotation marks or apostrophies
 
 	var currentPart = "", isInQuotes= false,isInApostrophe = false, output = [];
 
@@ -377,12 +401,6 @@ function selectiveSplit(str,split){
 
 const evaluate = (str) =>{ //eval that stores variables
 
-	//split at ;
-	//create list of var and referenced value
-	//save all vars and 
-	//if there is a var save it at window[var] = value
-
-	//split the name at = 
 	var operators = ['+', '-', '*', '/', '%'],coppy = str,output = [];	
 	
 	str = selectiveSplit(str,';').forEach(e =>{
