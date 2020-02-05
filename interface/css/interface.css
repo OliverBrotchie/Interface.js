@@ -715,14 +715,6 @@
       margin-left: auto;
       margin-top: auto;
       color: rgba(0, 0, 0, 0.82); }
-  .interface .separator-top {
-    border-top: 1px;
-    border-color: #e0e0e0;
-    border-top-style: solid; }
-  .interface .separator-bottom {
-    border-bottom: 1px;
-    border-color: #e0e0e0;
-    border-bottom-style: solid; }
   .interface .separator {
     animation: fadeIn ease 0.5s;
     -webkit-animation: fadeIn ease 0.5s;
@@ -735,5 +727,13 @@
     width: 100%;
     min-height: 1.1px;
     flex: 1 0 1px; }
+    .interface .separator-top {
+      border-top: 1px;
+      border-color: #e0e0e0;
+      border-top-style: solid; }
+    .interface .separator-bottom {
+      border-bottom: 1px;
+      border-color: #e0e0e0;
+      border-bottom-style: solid; }
 
 /*# sourceMappingURL=interface.css.map */

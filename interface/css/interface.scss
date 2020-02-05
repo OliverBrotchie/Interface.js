@@ -240,18 +240,7 @@ $history-bottom-padding: 16px !default;
 
     }
 
-    .separator-top {
-        border-top:1px;
-        border-color: $separator-color;
-        border-top-style:solid;
-    }
     
-    .separator-bottom {
-        border-bottom:1px;
-        border-color: $separator-color;
-        border-bottom-style:solid;
-    }
-
     
 
     .separator {
@@ -261,6 +250,19 @@ $history-bottom-padding: 16px !default;
         width:100%;
         min-height: 1.1px;
         flex: 1 0 1px;
+        
+        &-top {
+            border-top:1px;
+            border-color: $separator-color;
+            border-top-style:solid;
+        }
+    
+        &-bottom {
+            border-bottom:1px;
+            border-color: $separator-color;
+            border-bottom-style:solid;
+        }
+    
     }
 
 
