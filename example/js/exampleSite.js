@@ -16,10 +16,18 @@ var c = new Interface(document.getElementById('example').firstElementChild,m => 
 			secret: function(){
 				this.removeLast();
 				this.out(new Message({text:"°º¤ø,¸¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸",tag:"Console"}));
+			},
+			withArgs: function(x,y,z){
+				this.removeLast();
+				this.out(new Message({text:x,tag:"Console"}));
+				this.out(new Message({text:y,tag:"Console"}));
+				this.out(new Message({text:z,tag:"Console"}));
 			}
 		}
 	}
 });
+
+c.element.inputBox.focus();
 
 c.out(new Message({text:"Welcome to Interface.js!",tag:"Console"}));
 setTimeout(()=>{

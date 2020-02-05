@@ -110,13 +110,31 @@ Interface.prototype.evalCode = function(m){ //evaluates any code in a message
 	return m;
 }
 
-Interface.prototype.evalCommands = function(m){
+Interface.prototype.evalCommands = function(m){ //evaluates console commands (can take arguments with //yourComand arg1 arg2..)
 
-	m.text.split(" ").forEach(e=>{
-		Object.keys(this.options.consoleCommands.commands).forEach(key =>{
+	var arguments = [],capture;
+
+	m.text = m.text.split(" ")
+	
+	m.text.forEach(e=>{
+		Object.keys(this.options.consoleCommands.commands).forEach((key,index) =>{
 			if(e.substr(2, e.length) == key && e.substr(0, 2) == "//"){
 				try{
-					this.options.consoleCommands.commands[key].bind(this)();
+					//take in arguments
+					if(this.options.consoleCommands.commands[key].length > 0){
+						for(var i = 0; i < this.options.consoleCommands.commands[key].length; i++){
+							if(typeof m.text[i+index - 1] != 'undefined'){
+								arguments.push(m.text[i+index - 1]);
+							} else {
+								capture = i+1;
+								//console.log(getParameters(this.options.consoleCommands.commands[key]));
+								throw {name:"Bad Arguments", message: key + " takes " + this.options.consoleCommands.commands[key].length + " arguments, arguemnt " + capture + " is missing."};
+							}
+						}
+					}
+
+					this.options.consoleCommands.commands[key].bind(this)(...arguments);
+
 				} catch(error){
 					this.out(new Message({tag:"Console",text:"Console command failed, reason: " + error.message}));
 				}
@@ -456,4 +474,8 @@ const evaluate = (str) =>{ //eval that stores variables
 
 	return coppy;
 
+}
+
+function getParameters(func) {
+	return new RegExp('(?:'+func.name+'\\s*|^)\\s*\\((.*?)\\)').exec(func.toString().replace(/\n/g, ''))[1].replace(/\/\*.*?\*\//g, '').replace(/ /g, '').split(",");
 }

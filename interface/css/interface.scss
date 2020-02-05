@@ -147,13 +147,15 @@ $history-bottom-padding: 16px !default;
             box-sizing: content-box;
             transition: box-shadow .3s, border .3s;   
             line-height: 1.15;  
+
+            &:focus {
+                border-bottom: 1px solid $accent-color;
+                box-shadow: 0 1px 0 0 $accent-color;
+            }
               
         }
 
-        input:focus {
-            border-bottom: 1px solid $accent-color;
-            box-shadow: 0 1px 0 0 $accent-color;
-        }
+        
     }
 
     &-history{

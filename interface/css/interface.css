@@ -637,9 +637,9 @@
       box-sizing: content-box;
       transition: box-shadow .3s, border .3s;
       line-height: 1.15; }
-    .interface-input input:focus {
-      border-bottom: 1px solid #26a69a;
-      box-shadow: 0 1px 0 0 #26a69a; }
+      .interface-input input:focus {
+        border-bottom: 1px solid #26a69a;
+        box-shadow: 0 1px 0 0 #26a69a; }
   .interface-history {
     box-sizing: border-box;
     overflow-y: auto;

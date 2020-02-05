@@ -1,81 +1,81 @@
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Light_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Light_web.woff") format("woff"), url("https://drive.google.com/open?id=19JeF7VCgHNX8lcHEJF8ONCv2IiGs6dc6") format("woff");
   font-weight: 300;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Light_Italic_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Light_Italic_web.woff") format("woff"), url("https://drive.google.com/open?id=1sWxHZ2j362_ubtNofMzMCiEbLBWK5Xg3") format("woff");
   font-weight: 300;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Regular_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Regular_web.woff") format("woff"), url("https://drive.google.com/open?id=1zCyVmD4hcoNHlr8XMeYMOh8JFYuheO-5") format("woff");
   font-weight: 400;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Italic_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Italic_web.woff") format("woff"), url("https://drive.google.com/open?id=1MxSrIVytBhiV_1DlInnrqRBZt2yCg0gA") format("woff");
   font-weight: 400;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Bold_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Bold_web.woff") format("woff"), url("https://drive.google.com/open?id=11ae-k4d9IrdZF4yjMLcckHk05rtVKceP") format("woff");
   font-weight: 700;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Bold_Italic_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Bold_Italic_web.woff") format("woff"), url("https://drive.google.com/open?id=1cVg2ZAxGuQcK7VwLrYVLIEtAE0rxc8wc") format("woff");
   font-weight: 700;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Black_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Black_web.woff") format("woff"), url("https://drive.google.com/open?id=1aN8WUORIHGXVrryrq3L5fqNk2izPtwQ_") format("woff");
   font-weight: 900;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Mono';
-  src: url("fonts/mono/Vulf_Mono-Black_Italic_web.woff") format("woff");
+  src: url("fonts/mono/Vulf_Mono-Black_Italic_web.woff") format("woff"), url("https://drive.google.com/open?id=1kZii1rgHVmlbjxPYhyBx5vhrb0E7eXd1") format("woff");
   font-weight: 900;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Light.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Light.woff") format("woff"), url("https://drive.google.com/open?id=1sVE27yGFUZaNUwpJqJIneNcpCfqWv1Fj") format("woff");
   font-weight: 300;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Light_Italic.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Light_Italic.woff") format("woff"), url("https://drive.google.com/open?id=1A8ucFVR7clwpfAALT7pYl7ox2Zbzsaun") format("woff");
   font-weight: 300;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Medium.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Medium.woff") format("woff"), url("https://drive.google.com/open?id=1R6qA5KQlj6Ac6Rd7v-qchCCLwHk-AFgI") format("woff");
   font-weight: 400;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Medium_Italic.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Medium_Italic.woff") format("woff"), url("https://drive.google.com/open?id=13U2-0a8bw1s2dIeqrZi7tAf7Pl2vglcL") format("woff");
   font-weight: 400;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Bold.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Bold.woff") format("woff"), url("https://drive.google.com/open?id=1mRVE8VFoxCsjz5Ba7NojXy1NMKfBN0w0") format("woff");
   font-weight: 700;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Bold_Italic.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Bold_Italic.woff") format("woff"), url("https://drive.google.com/open?id=16PN-MELu-FXp9AHAtqNtMtJcijRFtsB0") format("woff");
   font-weight: 700;
   font-style: italic; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Black.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Black.woff") format("woff"), url("https://drive.google.com/open?id=1folTGoa9sODiK3OiJYwHgdq1Z0Pmh3vP") format("woff");
   font-weight: 900;
   font-style: normal; }
 @font-face {
   font-family: 'Vulf Sans';
-  src: url("fonts/sans/Vulf_Sans-Black_Italic.woff") format("woff");
+  src: url("fonts/sans/Vulf_Sans-Black_Italic.woff") format("woff"), url("https://drive.google.com/open?id=1R91ZLTLXU3LfbdpaHMI7cN-kk4edprqD") format("woff");
   font-weight: 900;
   font-style: italic; }
 .mono, .mono-italic, .mono-light, .mono-light-italic, .mono-bold, .mono-bold-italic, .mono-black, .mono-black-italic {
