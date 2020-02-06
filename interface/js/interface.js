@@ -72,8 +72,8 @@ function Message(e){
 	}
 
 	e = fullMerge(this.default,e);
-	this.tag = e.tag;
-	this.text = e.text;
+	this.tag = "" + e.tag;
+	this.text = "" + e.text;
 	this.style = e.style;	
 	this.time = Date.now();
 }
@@ -114,7 +114,7 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 
 	var arguments = [],capture;
 
-	m.text = m.text.split(" ")
+	m.text = m.text.split(" ").filter(a => a !== '');
 	
 	m.text.forEach(e=>{
 		Object.keys(this.options.consoleCommands.commands).forEach((key,index) =>{
@@ -126,9 +126,10 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 							if(typeof m.text[i+index - 1] != 'undefined'){
 								arguments.push(m.text[i+index - 1]);
 							} else {
-								capture = i+1;
-								//console.log(getParameters(this.options.consoleCommands.commands[key]));
-								throw {name:"Bad Arguments", message: key + " takes " + this.options.consoleCommands.commands[key].length + " arguments, arguemnt " + capture + " is missing."};
+								capture = i;
+								throw {name:"Bad Arguments", message: key + " takes " + this.options.consoleCommands.commands[key].length + " arguments (" + 
+									getParameters(this.options.consoleCommands.commands[key]).join(" ") +'), argument "' + 
+									getParameters(this.options.consoleCommands.commands[key])[capture] + '" is missing.'};
 							}
 						}
 					}
@@ -476,6 +477,6 @@ const evaluate = (str) =>{ //eval that stores variables
 
 }
 
-function getParameters(func) {
-	return new RegExp('(?:'+func.name+'\\s*|^)\\s*\\((.*?)\\)').exec(func.toString().replace(/\n/g, ''))[1].replace(/\/\*.*?\*\//g, '').replace(/ /g, '').split(",");
+function getParameters(e){
+	return e.toString().replace(/((\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s))/mg,'').match(/^function\s*[^\(]*\(\s*([^\)]*)\)/m)[1].split(/,/);
 }

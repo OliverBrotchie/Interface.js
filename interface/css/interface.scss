@@ -1,5 +1,4 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import 'components/fonts.css';
 @import 'components/normalize.css';
 @import 'components/grid.scss';
 @import 'variables/variables.scss';
@@ -241,9 +240,6 @@ $history-bottom-padding: 16px !default;
         }
 
     }
-
-    
-    
 
     .separator {
         @include fade-in(0.5s);

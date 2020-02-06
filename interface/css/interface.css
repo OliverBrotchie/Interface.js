@@ -1,5 +1,4 @@
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
-@import url(components/fonts.css);
 @import url(components/normalize.css);
 .col .row {
   margin-left: -0.75rem;
