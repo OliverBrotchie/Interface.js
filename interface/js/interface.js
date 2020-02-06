@@ -1,3 +1,9 @@
+/**
+ * 
+ * @constructor
+ * @param {string} title - The title of the book.
+ * @param {string} author - The author of the book.
+ */
 function Interface(element, onMessage, options){
 
 	this.defaultOptions = { //The defualt options for an interface
@@ -59,7 +65,7 @@ function Interface(element, onMessage, options){
 
 }
 
-function Message(e){
+export function Message(e){
 
 	this.default = {
 		tag: null, //The author of the message - not required
@@ -112,7 +118,7 @@ Interface.prototype.evalCode = function(m){ //evaluates any code in a message
 
 Interface.prototype.evalCommands = function(m){ //evaluates console commands (can take arguments with //yourComand arg1 arg2..)
 
-	var arguments = [],capture;
+	var args = [],capture;
 
 	m.text = m.text.split(" ").filter(a => a !== '');
 	
@@ -124,7 +130,7 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 					if(this.options.consoleCommands.commands[key].length > 0){
 						for(var i = 0; i < this.options.consoleCommands.commands[key].length; i++){
 							if(typeof m.text[i+index - 1] != 'undefined'){
-								arguments.push(m.text[i+index - 1]);
+								args.push(m.text[i+index - 1]);
 							} else {
 								capture = i;
 								throw {name:"Bad Arguments", message: key + " takes " + this.options.consoleCommands.commands[key].length + " arguments (" + 
