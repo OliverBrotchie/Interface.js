@@ -645,7 +645,7 @@
     flex: 1 1 auto;
     min-height: 120px;
     max-height: 100%;
-    padding: 34px 24px 16px 24px;
+    padding: 24px 24px 16px 24px;
     border-radius: 0 0 2px 2px; }
   .interface-content {
     display: flex;
@@ -714,6 +714,8 @@
       margin-left: auto;
       margin-top: auto;
       color: rgba(0, 0, 0, 0.82); }
+  .interface .striped {
+    background-color: rgba(242, 242, 242, 0.43); }
   .interface .separator {
     animation: fadeIn ease 0.5s;
     -webkit-animation: fadeIn ease 0.5s;

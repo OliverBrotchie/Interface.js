@@ -30,8 +30,9 @@ function Interface(element, onMessage, options){
 				defaultTagStyle: null,
 				tagStyles:{} 
 			},
-			separators: true,	//Includes seperators between messages
-			includeTime: true //Shows the time of the message		
+			includeTime: true, //Shows the time of the message
+			striped: true,	//Alternating message colors
+			separators: false //Includes seperators between messages; either false, true or full	
 		},
 
 		consoleCommands: {
@@ -235,15 +236,26 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 	var html = document.createElement("div");
 	html.classList.add("message");
 
+	//add stripes
+	if(this.options.messageOptions.striped && this.element.history.childElementCount % 2){
+		html.classList.add("striped");
+	}
+
 	//add separators
-	if(this.options.messageOptions.separators){
+	switch(this.options.messageOptions.separators){
+		case 'full': 
+			if(this.element.history.childElementCount == 0){
+				this.element.history.style.marginTop += '10px';
+				html.classList.add("separator-top");
+			}
 
-		if(this.element.history.childElementCount == 0){
-			html.classList.add("separator-top");
-		}
-
-		html.classList.add("separator-bottom");
-
+			html.classList.add("separator-bottom");
+		break;
+		case true:
+			if(this.element.history.childElementCount != 0){
+				html.classList.add("separator-top");
+			}
+		break;
 	}
 
 	//add tags
