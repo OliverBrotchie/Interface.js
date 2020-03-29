@@ -144,7 +144,7 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 	
 	m.text.forEach(e=>{
 		Object.keys(this.options.consoleCommands.commands).forEach((key,index) =>{
-			if(e.substr(2, e.length) == key && e.substr(0, 2) == "//"){
+			if(e.substr(this.options.consoleCommands.deliminator.length, e.length) == key && e.substr(0, this.options.consoleCommands.deliminator.length) == this.options.consoleCommands.deliminator){
 				try{
 					//take in arguments
 					if(this.options.consoleCommands.commands[key].length > 0){
