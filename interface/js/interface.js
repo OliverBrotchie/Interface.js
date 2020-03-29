@@ -263,9 +263,12 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 
 		html.appendChild(document.createElement("div"));
 		html.lastChild.classList.add("message-author");
-		html.lastChild.appendChild(document.createTextNode(m.tag + ":"));
-
-		if(m.style.tagStyle != null){
+		
+		if(m.tag != null){
+			html.lastChild.appendChild(document.createTextNode(m.tag + ":"));
+		}
+		
+		if(m.style.tagStyle != 'null'){
 			html = addClasses(html, m.style.tagStyle);
 		} else {
 			if(this.options.messageOptions.tags.defaultTagStyle != null){
