@@ -149,8 +149,8 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 					//take in arguments
 					if(this.options.consoleCommands.commands[key].length > 0){
 						for(var i = 0; i < this.options.consoleCommands.commands[key].length; i++){
-							if(typeof m.text[i+index - 1] != 'undefined'){
-								args.push(m.text[i+index - 1]);
+							if(typeof m.text[i+1] != 'undefined'){
+								args.push(m.text[i+1]);
 							} else {
 								capture = i;
 								throw {name:"Bad Arguments", message: key + " takes " + this.options.consoleCommands.commands[key].length + " arguments (" + 
