@@ -1,22 +1,6 @@
-/**
- *
- * @constructor
- * @param {html} element - The HTML element
- * @param {function} onMessage - A function to be run when the user inputs a message
- * @param {options} options - The initial options for the Interface
- * 
- * @param {object} options.messageOptions - Options for messages
- * @param {object} options.messageOptions.text - Options for text
- * @param {string} options.messageOptions.text.defaultTextStyle - The defualt text style: 'your-class-name'
- * @param {object} options.messageOptions.tags - Options for author tags
- * @param {boolean} options.messageOptions.tags.enabled - If true, outputs the author of the message
- * @param {string} options.messageOptions.tags.defaultTagStyle - The defualt tag style: 'your-class-name'
- * @param {string} options.messageOptions.separators - 
- * @param {object} options.messageOptions.tags.tagStyles - Additional styles for tags: {author:'your-class-name', author2...}
- * 
- * 
- * 
- */
+// This is my own front end js library for text based aplications
+
+
 function Interface(element, onMessage, options){
 
 	this.defaultOptions = { //The defualt options for an interface
@@ -57,12 +41,14 @@ function Interface(element, onMessage, options){
 			enabled: false,  //Prints everything the browser console outputs
 			tag: 'Console' //The author tag for the browser console - will look in authors for styling
 		},
-
+		arrowNavigation: {
+			enabled: true //Allows user to navigate their own inputs with up/down arrow keys
+		}
 	}
 
 	this.options = fullMerge(this.defaultOptions,options);
 	this.onMessage = onMessage; 
-	this.history = [];
+	this.history = [];	
 	
 	this.element = element;
 	this.element.history = element.children[0].children[0].children[0];
@@ -77,6 +63,10 @@ function Interface(element, onMessage, options){
 
 	this.element.inputBtn.addEventListener('click',() => {this.getInput()});
 
+	if(this.options.arrowNavigation.enabled){
+		this.nav = null;
+		this.element.inputBox.addEventListener('keydown',(e)=> {this.navigate(e.key)})
+	}
 }
 
 function Message(e){
@@ -142,6 +132,8 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 
 	m.text = m.text.split(" ").filter(a => a !== '');
 	
+	
+
 	m.text.forEach(e=>{
 		Object.keys(this.options.consoleCommands.commands).forEach((key,index) =>{
 			if(e.substr(this.options.consoleCommands.deliminator.length, e.length) == key && e.substr(0, this.options.consoleCommands.deliminator.length) == this.options.consoleCommands.deliminator){
@@ -160,7 +152,7 @@ Interface.prototype.evalCommands = function(m){ //evaluates console commands (ca
 						}
 					}
 
-					this.options.consoleCommands.commands[key].bind(this)(...arguments);
+					this.options.consoleCommands.commands[key].bind(this)(...args);
 
 				} catch(error){
 					this.out(new Message({tag:"Console",text:"Console command failed, reason: " + error.message}));
@@ -231,6 +223,42 @@ Interface.prototype.removeFirst = function(){ //Clears the history from the top
 
 }
 
+Interface.prototype.navigate = function(key){ //Navigates up/down one message in the input box
+	//up = 38
+	//right = 40
+
+	if(key == 'ArrowUp' || key == 'ArrowDown'){
+
+		var personalHistory = [];
+
+		this.history.forEach(e => {
+			if(e.tag == this.options.parrot.tag){
+				personalHistory.push(e);
+			}
+		});
+
+		if(personalHistory.length > 0){
+			if(key == 'ArrowUp'){
+
+				if(this.nav === null ){
+					this.nav = personalHistory.length - 1;
+				} else if(this.nav > 0 ) {
+					this.nav--;
+				}
+				
+				this.element.inputBox.value = personalHistory[this.nav].text;
+	
+			} else if(key == 'ArrowDown' && this.nav != null && this.nav < personalHistory.length - 1) {
+				this.nav++;
+				this.element.inputBox.value = personalHistory[this.nav].text;
+			}
+		}
+	}
+	
+
+
+}
+
 Interface.prototype.out = function(m){ //Outputs a message to the interface
 
 	var html = document.createElement("div");
@@ -263,12 +291,12 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 
 		html.appendChild(document.createElement("div"));
 		html.lastChild.classList.add("message-author");
-		
-		if(m.tag != null){
+
+		if(m.tag != 'null'){
 			html.lastChild.appendChild(document.createTextNode(m.tag + ":"));
 		}
 		
-		if(m.style.tagStyle != 'null'){
+		if(m.style.tagStyle != null){
 			html = addClasses(html, m.style.tagStyle);
 		} else {
 			if(this.options.messageOptions.tags.defaultTagStyle != null){
@@ -316,6 +344,7 @@ Interface.prototype.out = function(m){ //Outputs a message to the interface
 	//display
 	this.element.history.appendChild(html);
 	this.element.history.lastChild.scrollIntoView();
+	this.nav = null;
 }
 
 function reverseChars(str){ //Reverses given charecters (including open/close chars)
