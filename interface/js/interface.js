@@ -224,8 +224,6 @@ Interface.prototype.removeFirst = function(){ //Clears the history from the top
 }
 
 Interface.prototype.navigate = function(key){ //Navigates up/down one message in the input box
-	//up = 38
-	//right = 40
 
 	if(key == 'ArrowUp' || key == 'ArrowDown'){
 
